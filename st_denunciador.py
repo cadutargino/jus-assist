@@ -24,7 +24,8 @@ def read_pdf(file):
 		all_page_text += page.extractText()
 
 	return all_page_text
-def main()
+
+def main():
 
 doc_file = st.file_uploader("Insira Boletim de Ocorrência", type=["pdf"])
 if st.button("Process"):
