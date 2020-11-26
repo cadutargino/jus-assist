@@ -1,4 +1,4 @@
-import docx, re, genderbr, pdfplumber
+import PyPDF2, docx, re, genderbr, pdfplumber
 from PyPDF2 import PdfFileReader
 import streamlit as st
 import os
@@ -24,6 +24,7 @@ def read_pdf(file):
 		all_page_text += page.extractText()
 
 	return all_page_text
+def main()
 
 doc_file = st.file_uploader("Insira Boletim de Ocorrência", type=["pdf"])
 if st.button("Process"):
@@ -153,8 +154,8 @@ if st.button("Process"):
     d.save("CRDen_" + numero +".docx")
     
     st.markdown(get_binary_file_downloader_html("CRDen_" + numero +".docx", '  minuta da denúncia'), unsafe_allow_html=True)
-
-    
+if __name__ == '__main__':
+    main()
     #@st.cache
     #def get_data():
     #    url = "http://data.insideairbnb.c" \
