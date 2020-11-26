@@ -1,4 +1,4 @@
-import PyPDF2, docx, re, genderbr, pdfplumber
+import docx, re, genderbr, pdfplumber
 from PyPDF2 import PdfFileReader
 import streamlit as st
 import os
