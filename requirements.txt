@@ -4,6 +4,5 @@ streamlit==0.73.1
 genderbr==0.1.2
 docx==0.2.4
 PyPDF2==1.26.0
-unidecode
-os
-base64
+unidecode==1.1.2
+
