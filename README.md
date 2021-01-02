@@ -1,4 +1,4 @@
-# st_jus_assist
+# jus_assist
  Assistente para denúncia 
 
  O aplicativo pretende auxiliar a atividade funcional do Ministério Público do Estado de São Paulo, com a produção de minuta de peças jurídicas a partir do PDF do boletim de ocorrência do fato. 
