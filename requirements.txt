@@ -1,6 +1,10 @@
-pdfplumber==0.5.24
+pdfplumber==0.5.25
 python_docx==0.8.10
-streamlit==0.69.1
+streamlit==0.73.1
 genderbr==0.1.2
 docx==0.2.4
 PyPDF2==1.26.0
+unidecode
+re
+os
+base64
