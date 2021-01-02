@@ -5,6 +5,5 @@ genderbr==0.1.2
 docx==0.2.4
 PyPDF2==1.26.0
 unidecode
-re
 os
 base64
