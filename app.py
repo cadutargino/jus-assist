@@ -10,6 +10,7 @@ import comarcas
 from comarcas import grandes
 from dict_crimes import dict_crimes, trafico, furto, lei_maria_penha, roubo, transito, med_prot, dict_med_prot, prisao, \
     dict_prisao, crimes_especie2, blanck
+from datetime import datetime
 
 
 def get_binary_file_downloader_html(bin_file, file_label='File'):
@@ -278,7 +279,7 @@ def main():
             if cidade2 == "S.Paulo" or cidade2 == "S. Paulo":
                 cidade2 = "São Paulo"
 
-            if cidade2 == comarc:
+            if unidecode(cidade2) == unidecode(comarc):
                 municipalidade = f"e comarca de {comarc}"
             else:
                 municipalidade = f"de {cidade2} e comarca de {comarc}"
@@ -323,7 +324,7 @@ def main():
             else:
                 testemunha = ""
 
-            profissao_testemunha = extract_term(BOText, r'Testemunha: -(.*?)Profissão:(.*?)Instru')
+            profissao_testemunha = extract_term(BOText, r'Testemunha: -(.*?)Profissão:(.*?)-')
             if profissao_testemunha is not None:
                 profissao_testemunha = profissao_testemunha.lower()
                 if "policial militar" in profissao_testemunha:
@@ -350,7 +351,7 @@ def main():
             else:
                 condutor = ""
 
-            profissao_condutor = extract_term(BOText, r'Condutor: -(.*?)Profissão:(.*?)Instru')
+            profissao_condutor = extract_term(BOText, r'Condutor: -(.*?)Profissão:(.*?)-')
             if profissao_condutor is not None:
                 profissao_condutor = profissao_condutor.lower()
                 if "policial militar" in profissao_condutor:
@@ -407,6 +408,15 @@ def main():
             # else:
             #     d = docx.Document('CRDen_a.docx')
 
+            # Insere data atual e grava na variável data_atual
+            now = datetime.now()
+
+            meses_2 = {1: 'janeiro', 2: 'fevereiro', 3: 'março', 4: 'abril', 5: 'maio', 6: 'junho',
+                       7: 'julho', 8: 'agosto', 9: 'setembro', 10: 'outubro', 11: 'novembro',
+                       12: 'dezembro'}
+
+            data_atual = f"{now.day} de {meses_2[now.month]} de {now.year}"
+
             # Extrai numero do processo
             numRegex = re.compile(r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}')
             mo_num = numRegex.search(doc_file.name)
@@ -431,6 +441,7 @@ def main():
             st.markdown(f"**autos nº:** {numero}")
             st.markdown(f"**data do fato:** {data_ext}")
             st.markdown(f"**hora do fato:** {hora}")
+            st.markdown(f"**data atual:** {data_atual}")
 
         else:
             st.warning('Arquivo não PDF')
@@ -461,7 +472,10 @@ def main():
         change_term_in_whole_document(d, "CONDUTOR1", condutor_profissao)
         change_term_in_whole_document(d, "TESTEMUNHA2", testemunha_profissao)
         change_term_in_whole_document(d, "vítima3", vitima)
+        change_term_in_whole_document(d, "placeholder4", vitima)
 
+        # inserir data atual (a atualização automatica do word não funciona direito)
+        change_term_in_whole_document(d, "5TODAY5", data_atual)
         # Alterações DENUNCIA:
         if denuncia:
             # Trocar a data, cidade, comarca, endereço, horario e o nome do denunciado na Denúncia

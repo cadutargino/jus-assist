@@ -10,8 +10,8 @@ for art in trafico_artigo:
 
 # Furto:
 furto = ["Furto simples (art. 155)", "Furto qualificado por rompimento de obstáculo (art. 155, § 4º, I)",
-         "Furto qualificado mediante escalada (art. 155, § 4º, II)", "Furto qualificado por concurso de pessoas (art. 155, §4º, IV)"]
-furto_artigo = ["155", '155_parIV_I', "155_par4_II", "155_par4_IV"]
+         "Furto qualificado mediante escalada (art. 155, § 4º, II)"]
+furto_artigo = ["155", '155_parIV_I', "155_par4_II"]
 furto_filename = []
 for art in furto_artigo:
     arquivo = f"CRDen_{art}_furto.docx"
@@ -31,8 +31,8 @@ for art in lmp_artigo:
 
 # roubo:
 roubo = ["roubo simples (art.157)", "roubo majorado (concurso de pessoas - 157, § 2º, II)",
-         "roubo majorado (arma branca - art. 157, § 2º, VII)", "roubo majorado (arma de fogo - art. 157, § 2ª-A, I)"]
-roubo_artigo = ["157", "157_par2_II", "157_par2_VII", "157_par2-A_I"]
+         "roubo majorado (arma de fogo - art. 157, § 2ª-A, I)"]
+roubo_artigo = ["157", "157_par2_II", "157_par2-A_I"]
 roubo_filename = []
 for art in roubo_artigo:
     arquivo = f"CRDen_{art}_roubo.docx"
