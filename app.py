@@ -213,7 +213,7 @@ def main():
 
     if st.checkbox("Denúncia"):
         denuncia = True
-        crimes = ["Tráfico de drogas", "Furto (art. 155)", "Roubo (art. 157)", "Lei Maria da Penha", "Crimes de Trânsito"]
+        crimes = ["Drogas", "Furto (art. 155)", "Roubo (art. 157)", "Lei Maria da Penha", "Crimes de Trânsito"]
         genero_crime = st.selectbox("Tipo de crime", crimes)
         if genero_crime == "Tráfico de drogas":
             especie_crime = st.selectbox("Crime em espécie", trafico)

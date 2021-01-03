@@ -1,8 +1,8 @@
 crimes = ["Tráfico de drogas", "Furto (art. 155)", "Roubo (art. 157)", "Lei Maria da Penha", "Roubo", "Transito"]
 
 # Trafico:
-trafico = ["Tráfico (art. 33)", "Tráfico e Associação (arts. 33 e 35)", "Porte de droga para consumo (art. 28)"]
-trafico_artigo = ["33", "33_35", "28"]
+trafico = ["Tráfico (art. 33)", "Porte de droga para consumo (art. 28)"]
+trafico_artigo = ["33", "28"]
 trafico_filename = []
 for art in trafico_artigo:
     arquivo = f"CRDen_{art}_drogas.docx"
