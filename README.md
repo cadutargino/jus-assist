@@ -1,7 +1,8 @@
-# jus_assist
- Assistente para denúncia 
+# jus_assist [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/yourGitHubName/yourRepo/yourApp/)
 
- O aplicativo pretende auxiliar a atividade funcional do Ministério Público do Estado de São Paulo, com a produção de minuta de peças jurídicas a partir do PDF do boletim de ocorrência do fato. 
+Assistente para redação de minutas jurídicas
+
+ O aplicativo permite a elaboração de minutas de peças jurídicas do Ministério Público de São Paulo a partir do PDF do boletim de ocorrência do fato. 
 
  Sao extraídos dados básicos do Boletim de Ocorrência de forma automatizada, gerando uma minuta da peça em arquivo word para download com tais informações já preenchidas.
 
