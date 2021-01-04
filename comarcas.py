@@ -653,16 +653,29 @@ comarcas = {
     "S. PAULO": "SÃO PAULO",
     "S.PAULO": "SÃO PAULO"
 }
+def titled_string_rectifier(string):
+    list_string = string.split()
+    new_list = []
+    new_string = ""
+    for word in list_string:
+        if len(word) > 3 or len(list_string) < 3 or word not in list_string[1: -1]:
+            new_list.append(word)
+        else:
+            new_list.append(word.lower())
+    new_string = " ".join(new_list)
+    return new_string
 
 cidades = []
 for cidade in comarcas:
     cidade = cidade.title()
+    cidade = titled_string_rectifier(cidade)
     cidades.append(cidade)
 
 juizo = []
 for cidade in comarcas:
     local = comarcas[cidade]
     local = local.title()
+    local = titled_string_rectifier(local)
     juizo.append(local)
 
 

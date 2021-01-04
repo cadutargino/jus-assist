@@ -269,6 +269,7 @@ def main():
             if cidade is not None:
                 cidade2 = extract_term(cidade, r'CEP: (.*?)SP')
                 cidade2 = cidade2[17:-4].title().strip()
+                cidade2 = titled_string_rectifier(cidade2)
             else:
                 cidade2 = None
 
@@ -428,7 +429,7 @@ def main():
             # numero = doc_file.name[-29:-4]  # numero do processo para incluir no nome do arquivo final
 
             # Mostrando resultados
-            st.write(file_details)
+            # st.write(file_details)
             # st.write(BOText) # bom para checar o BO na íntegra
             st.subheader("Resumo dos dados extraídos")
             st.markdown(f"**local:** {Local}")

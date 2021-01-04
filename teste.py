@@ -69,7 +69,5 @@ import re
 # string3= "Preta Gil"
 # string4 = " Gil Diniz Dos Santos"
 #
-# print(titled_string_rectifier(string1))
-# print(titled_string_rectifier(string2))
-# print(titled_string_rectifier(string3))
-# print(titled_string_rectifier(string4))
+import unidecode
+print(unidecode.unidecode("EMBU DAS ARTES"))
