@@ -537,6 +537,8 @@ def main():
         st.markdown("* Extrai alguns dados do boletim de ocorrência tais como: data, horário e local do crime,"
                     " cidade, comarca, nomes do indiciado, de testemunhas, vítima, número do processo, etc.")
         st.markdown("* Com esses dados, o aplicativo gera uma minuta da peça jurídica já com essas informações incorporados.")
+        st.markdown('* O "recheio" da peça, é apenas um modelo, sem modificação realizada pelo aplicativo. Na denúncia, a maior parte das'
+                    ' modificações é realizada no primeiro e no último parágrafo, além do rol de testemunhas.')
         st.markdown("* O arquivo word da minuta fica disponível no link para download, após o processamento do PDF.")
         st.markdown("* O aplicativo não permanece com cópia do Boletim de Ocorrência, nem tampouco com qualquer informação extraída"
                     " do boletim de ocorrência ou inserida pelo usuário.")
