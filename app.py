@@ -444,7 +444,7 @@ def main():
             st.markdown(f"**autos nº:** {numero}")
             st.markdown(f"**data do fato:** {data_ext}")
             st.markdown(f"**hora do fato:** {hora}")
-            st.markdown(f"**data atual:** {data_atual}")
+            # st.markdown(f"**data atual:** {data_atual}")
 
         else:
             st.warning('Arquivo não PDF')
