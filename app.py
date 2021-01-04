@@ -194,10 +194,10 @@ def titled_string_rectifier(string):
     new_list = []
     new_string = ""
     for word in list_string:
-        if len(word) <= 2:
-            new_list.append(word.lower())
-        else:
+        if len(word) > 3 or len(list_string) < 3 or word not in list_string[1: -1]:
             new_list.append(word)
+        else:
+            new_list.append(word.lower())
     new_string = " ".join(new_list)
     return new_string
 

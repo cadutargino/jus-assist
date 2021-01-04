@@ -51,3 +51,25 @@ import re
 #                          12: 'dezembro'}
 #
 # data_atual = f"{now.day} de {meses_2[now.month]} de {now.year}"
+#
+# def titled_string_rectifier(string):
+#     list_string = string.split()
+#     new_list = []
+#     new_string = ""
+#     for word in list_string:
+#         if len(word) > 3 or len(list_string) < 3 or word not in list_string[1: -1]:
+#             new_list.append(word)
+#         else:
+#             new_list.append(word.lower())
+#     new_string = " ".join(new_list)
+#     return new_string
+#
+# string1 = "Embu Das Artes"
+# string2 = "Carlos De Oliveira Dos Santos Da Silva"
+# string3= "Preta Gil"
+# string4 = " Gil Diniz Dos Santos"
+#
+# print(titled_string_rectifier(string1))
+# print(titled_string_rectifier(string2))
+# print(titled_string_rectifier(string3))
+# print(titled_string_rectifier(string4))
