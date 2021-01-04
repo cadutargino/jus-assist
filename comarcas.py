@@ -689,6 +689,7 @@ tamanho = df['comarca'].to_list()
 grandes = []
 for cidade in tamanho:
     cidade = cidade.title()
+    cidade = titled_string_rectifier(cidade)
     grandes.append(cidade)
 
 

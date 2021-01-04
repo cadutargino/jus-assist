@@ -293,9 +293,11 @@ def main():
 
             # Extrai indiciado/autor
             indiciado = ""
-            indiciado = extract_term(BOText, r'(Indiciad([oa])|Autor): -(.*?)-')
+            indiciado = extract_term(BOText, r'(Indiciad([oa])|Autor|Investigad([oa])): -(.*?)-')
             if indiciado is not None and 'Autor' in indiciado:
                 indiciado = indiciado[9:-2]
+            elif indiciado is not None and "Investiga" in indiciado:
+                indiciado = indiciado[14:-2]
             elif indiciado is not None:
                 indiciado = indiciado[13:-2]
             else:
