@@ -31,7 +31,7 @@ for art in lmp_artigo:
 
 # roubo:
 roubo = ["roubo simples (art.157)", "roubo majorado (concurso de pessoas - 157, § 2º, II)",
-         "roubo majorado (arma de fogo - art. 157, § 2ª-A, I)"]
+         "roubo majorado (arma de fogo - art. 157, § 2ª-A, I)" ]
 roubo_artigo = ["157", "157_par2_II", "157_par2-A_I"]
 roubo_filename = []
 for art in roubo_artigo:
