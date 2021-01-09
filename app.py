@@ -257,13 +257,19 @@ def main():
 
             # Extrai local
             Local = extract_term(BOText, r'Local: (.*?)CEP')
-            if Local is not None:
+            if Local is not None and len(Local) < 120:
+                Local = Local[6:-5]
+                Local = Local.title().strip()
+                Local = titled_string_rectifier(Local)
+            elif Local is not None:
+                Local = extract_term(BOText, r'Local: (.*?)Tipo')
+                city = extract_term(Local, r'[^-]+(- SP|-SP)')
+                Local = Local.replace(city, "")
                 Local = Local[6:-5]
                 Local = Local.title().strip()
                 Local = titled_string_rectifier(Local)
             else:
-                pass
-
+                Local = ""
             # Extrai cidade
             cidade = extract_term(BOText, r'Local: (.*?)Tipo')
             if cidade is not None:
@@ -434,7 +440,7 @@ def main():
 
             # Mostrando resultados
             # st.write(file_details)
-            st.write(BOText) # bom para checar o BO na íntegra
+            # st.write(BOText) # bom para checar o BO na íntegra
             st.subheader("Resumo dos dados extraídos")
             st.markdown(f"**local:** {Local}")
             st.markdown(f"**cidade:** {cidade2}")
