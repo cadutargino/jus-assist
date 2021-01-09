@@ -267,11 +267,13 @@ def main():
             # Extrai cidade
             cidade = extract_term(BOText, r'Local: (.*?)Tipo')
             if cidade is not None:
-                cidade2 = extract_term(cidade, r'CEP: (.*?)SP')
-                cidade2 = cidade2[17:-4].title().strip()
+                cidade2 = extract_term(cidade, r'[^-]+(- SP|-SP)')
+                cidade2 = cidade2[:-4].title().strip()
+                cidade2 = re.sub(r"\d+", "", cidade2)
                 cidade2 = titled_string_rectifier(cidade2)
             else:
                 cidade2 = None
+
 
             for city in comarcas.comarcas2:
                 if unidecode(cidade2) == unidecode(city):
@@ -432,7 +434,7 @@ def main():
 
             # Mostrando resultados
             # st.write(file_details)
-            # st.write(BOText) # bom para checar o BO na íntegra
+            st.write(BOText) # bom para checar o BO na íntegra
             st.subheader("Resumo dos dados extraídos")
             st.markdown(f"**local:** {Local}")
             st.markdown(f"**cidade:** {cidade2}")

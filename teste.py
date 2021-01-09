@@ -69,5 +69,22 @@ import re
 # string3= "Preta Gil"
 # string4 = " Gil Diniz Dos Santos"
 #
-import unidecode
-print(unidecode.unidecode("EMBU DAS ARTES"))
+
+# regex para pegar mais de uma testemunha: temunha: - (.+?) - Presente ao
+# temunha: - (.+?) - (Presente ao|Não presente)(.+?)(Policial|policial|POLICIAL)
+# - [ ^ -]+ - [ ^ -]+ - (Presente ao | Não presente ao)
+
+
+# Estratégia regex:
+# (Autor|Indiciad[oa]|Investigad[oa]): (.+)Vítima: - (.+?) - (Presente ao|Não presente ao)
+
+# 1) extrai o mais geral para vítima, indiciado, testemunha
+# tima: (.+) - (Presente ao|Não presente ao)
+
+# 2) No texto extraído verifica quantas pessoas com o regex sobre o trecho:
+# - [ ^ -]+ - (Presente ao | Não presente ao)
+
+# 3) if vulgo in resultados,  faz slice para tirar o vulgo:
+
+
+
