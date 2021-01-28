@@ -273,7 +273,7 @@ def main():
             # Extrai cidade
             cidade = extract_term(BOText, r'Local: (.*?)Tipo')
             if cidade is not None:
-                cidade2 = extract_term(cidade, r'[^-]+(- SP|-SP)')
+                cidade2 = extract_term(cidade, r'[^-]+(- SP|-SP|SP|Sp|sp)')
                 cidade2 = cidade2[:-4].title().strip()
                 cidade2 = re.sub(r"\d+", "", cidade2)
                 cidade2 = titled_string_rectifier(cidade2)
