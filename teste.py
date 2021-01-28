@@ -84,7 +84,9 @@ import re
 # 2) No texto extraído verifica quantas pessoas com o regex sobre o trecho:
 # - [ ^ -]+ - (Presente ao | Não presente ao)
 
-# 3) if vulgo in resultados,  faz slice para tirar o vulgo:
 
+
+
+# 3) if vulgo in resultados,  faz slice para tirar o vulgo:
 
 
