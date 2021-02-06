@@ -459,14 +459,15 @@ def main():
 
         # Inserir nome do Promotor
         if nome_promotor is not None and len(nome_promotor) > 0:
-            primeiro_nome_promotor = nome_promotor.split()[0]
-            sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
-            st.write(f"Nome do Promotor(a) de Justiça: {nome_promotor}")
-            st.write(f"Sexo do Promotor(a) de Justiça: {sexo_promotor}")
-            if sexo_promotor == "F":
-                promotor_justica = "Promotora de Justiça"
-            else:
-                promotor_justica = "Promotor de Justiça"
+            promotor_justica = "Promotor de Justiça"
+            # primeiro_nome_promotor = nome_promotor.split()[0]
+            # sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
+            # st.write(f"Nome do Promotor(a) de Justiça: {nome_promotor}")
+            # st.write(f"Sexo do Promotor(a) de Justiça: {sexo_promotor}")
+            # if sexo_promotor == "F":
+            #     promotor_justica = "Promotora de Justiça"
+            # else:
+            #     promotor_justica = "Promotor de Justiça"
         else:
             nome_promotor = None
             promotor_justica = "Promotor de Justiça"
