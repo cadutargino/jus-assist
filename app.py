@@ -458,18 +458,22 @@ def main():
             st.warning('Arquivo não PDF')
 
         # Inserir nome do Promotor
-        if nome_promotor is not None and len(nome_promotor) > 0:
+        if nome_promotor is None or len(nome_promotor) <= 0:
+            nome_promotor = None
+            promotor_justica = "Promotor de Justiça"
+        else:
             primeiro_nome_promotor = nome_promotor.split()[0]
             sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
-            st.write(f"Nome do Promotor(a) de Justiça: {nome_promotor}")
-            st.write(f"Sexo do Promotor(a) de Justiça: {sexo_promotor}")
             if sexo_promotor == "F":
+                sexo_promotor = "feminino"
+            else:
+                sexo_promotor = "masculino"
+            st.markdown(f"**Nome do(a) Promotor(a) de Justiça:** {nome_promotor}")
+            st.markdown(f"**Sexo do(a) Promotor(a) de Justiça:** {sexo_promotor}")
+            if sexo_promotor == "feminino":
                 promotor_justica = "Promotora de Justiça"
             else:
                 promotor_justica = "Promotor de Justiça"
-        else:
-            nome_promotor = None
-            promotor_justica = "Promotor de Justiça"
 
         change_term_in_whole_document(d, "Subscritor", nome_promotor, "bold")
         change_term_in_whole_document(d, "Promotor", promotor_justica, "bold")
@@ -519,7 +523,7 @@ def main():
             change_term_by_placeholder(d, "Trata-se de expediente", "placeholder1", vitima)
             change_term_by_placeholder(d, "Trata-se de expediente", "indiciado4", indiciado)
         else:
-             pass
+            pass
 
 
         # Substituindo o número do processo no arquivo Word:
@@ -560,10 +564,10 @@ def main():
         st.markdown("---")
         st.subheader("Sobre o autor:")
         st.markdown("Este aplicativo foi desenvolvido por **Carlos Eduardo Targino da Silva**,"
-                     " 2º Promotor de Justiça de Conchas, para automação parcial da produção de peças jurídicas"
+                    " 2º Promotor de Justiça de Conchas, para automação parcial da produção de peças jurídicas"
                     " mais simples no âmbito do Ministério Público."
-                     " A ideia é tentar minimizar erros e evitar perda de tempo desnecessária com transcrições de dados.")
+                    " A ideia é tentar minimizar erros e evitar perda de tempo desnecessária com transcrições de dados.")
         st.markdown("Caso tenha alguma crítica ou sugestão, entre em contato por email: "
-                 "<mailto:carlostsilva@mpsp.mp.br>")
+                    "<mailto:carlostsilva@mpsp.mp.br>")
 if __name__ == '__main__':
     main()
