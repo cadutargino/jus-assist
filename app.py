@@ -258,25 +258,37 @@ def main():
             # Extrai local
             Local = extract_term(BOText, r'Local: (.*?)CEP')
             if Local is not None and len(Local) < 120:
-                Local = Local[6:-5]
-                Local = Local.title().strip()
-                Local = titled_string_rectifier(Local)
+                try:
+                    Local = Local[6:-5]
+                    Local = Local.title().strip()
+                    Local = titled_string_rectifier(Local)
+                except:
+                    Local = ""
             elif Local is not None:
-                Local = extract_term(BOText, r'Local: (.*?)Tipo')
-                city = extract_term(Local, r'[^-]+(- SP|-SP)')
-                Local = Local.replace(city, "")
-                Local = Local[6:-5]
-                Local = Local.title().strip()
-                Local = titled_string_rectifier(Local)
+                try:
+                    Local = extract_term(BOText, r'Local: (.*?)Tipo')
+                    city = extract_term(Local, r'[^-]+(- SP|-SP|SP|Sp|sp)')
+                    Local = Local.replace(city, "")
+                    Local = Local[6:-5]
+                    Local = Local.title().strip()
+                    Local = titled_string_rectifier(Local)
+                except:
+                    Local = ""
             else:
                 Local = ""
             # Extrai cidade
-            cidade = extract_term(BOText, r'Local: (.*?)Tipo')
+            try:
+                cidade = extract_term(BOText, r'Local: (.*?)Tipo')
+            except:
+                cidade = ""
             if cidade is not None:
-                cidade2 = extract_term(cidade, r'[^-]+(- SP|-SP|SP|Sp|sp)')
-                cidade2 = cidade2[:-4].title().strip()
-                cidade2 = re.sub(r"\d+", "", cidade2)
-                cidade2 = titled_string_rectifier(cidade2)
+                try:
+                    cidade2 = extract_term(cidade, r'[^-]+(- SP|-SP|SP|Sp|sp)')
+                    cidade2 = cidade2[:-4].title().strip()
+                    cidade2 = re.sub(r"\d+", "", cidade2)
+                    cidade2 = titled_string_rectifier(cidade2)
+                except:
+                    cidade2 = None
             else:
                 cidade2 = None
 
@@ -284,6 +296,7 @@ def main():
             for city in comarcas.comarcas2:
                 if unidecode(cidade2) == unidecode(city):
                     comarc = comarcas.comarcas2[city]
+
 
             if cidade2 == "S.Paulo" or cidade2 == "S. Paulo":
                 cidade2 = "São Paulo"
@@ -309,7 +322,7 @@ def main():
             elif indiciado is not None:
                 indiciado = indiciado[13:-2]
             else:
-                pass
+                indiciado = ""
 
             # Extrai vítima:
             vitima = extract_term(BOText, r'Vítima: -(.*?)-')
@@ -463,17 +476,20 @@ def main():
             promotor_justica = "Promotor de Justiça"
         else:
             primeiro_nome_promotor = nome_promotor.split()[0]
-            sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
-            if sexo_promotor == "F":
-                sexo_promotor = "feminino"
-            else:
-                sexo_promotor = "masculino"
-            st.markdown(f"**Nome do(a) Promotor(a) de Justiça:** {nome_promotor}")
-            st.markdown(f"**Sexo do(a) Promotor(a) de Justiça:** {sexo_promotor}")
-            if sexo_promotor == "feminino":
-                promotor_justica = "Promotora de Justiça"
-            else:
-                promotor_justica = "Promotor de Justiça"
+            try:
+                sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
+                if sexo_promotor == "F":
+                    sexo_promotor = "feminino"
+                else:
+                    sexo_promotor = "masculino"
+                st.markdown(f"**Nome do(a) Promotor(a) de Justiça:** {nome_promotor}")
+                st.markdown(f"**Sexo do(a) Promotor(a) de Justiça:** {sexo_promotor}")
+                if sexo_promotor == "feminino":
+                    promotor_justica = "Promotora de Justiça"
+                else:
+                    promotor_justica = "Promotor de Justiça"
+            except:
+                promotor_justiça = "Promotor de Justiça"
 
         change_term_in_whole_document(d, "Subscritor", nome_promotor, "bold")
         change_term_in_whole_document(d, "Promotor", promotor_justica, "bold")
