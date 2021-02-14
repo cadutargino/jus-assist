@@ -257,6 +257,7 @@ def main():
 
             # Extrai local
             Local = extract_term(BOText, r'Local: (.*?)CEP')
+            # st.write(Local)
             if Local is not None and len(Local) < 120:
                 try:
                     Local = Local[6:-5]
@@ -267,7 +268,8 @@ def main():
             elif Local is not None:
                 try:
                     Local = extract_term(BOText, r'Local: (.*?)Tipo')
-                    city = extract_term(Local, r'[^-]+(- SP|-SP|SP|Sp|sp)')
+                    city_match = re.findall(r'[^-]+-* *[sS][pP]', Local)
+                    city = city_match[len(city_match)-1]
                     Local = Local.replace(city, "")
                     Local = Local[6:-5]
                     Local = Local.title().strip()
@@ -283,16 +285,20 @@ def main():
                 cidade = ""
             if cidade is not None:
                 try:
-                    cidade2 = extract_term(cidade, r'[^-]+(- SP|-SP|SP|Sp|sp)')
+                    cidade2_match = re.findall(r'[^-]+-* *[sS][pP]', cidade)
+                    cidade2 = cidade2_match[len(cidade2_match) - 1]
+                    # cidade2 = extract_term(cidade, r'[^-]+-* *[sS][pP]')
                     cidade2 = cidade2[:-4].title().strip()
                     cidade2 = re.sub(r"\d+", "", cidade2)
                     cidade2 = titled_string_rectifier(cidade2)
                 except:
-                    cidade2 = None
+                    cidade2 = ""
             else:
-                cidade2 = None
+                cidade2 = ""
 
 
+
+            comarc = ""
             for city in comarcas.comarcas2:
                 if unidecode(cidade2) == unidecode(city):
                     comarc = comarcas.comarcas2[city]
