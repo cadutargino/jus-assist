@@ -251,7 +251,7 @@ def main():
 
     doc_file = st.file_uploader("Insira PDF do Boletim de Ocorrência extraído do processo digital:", type=["pdf"])
     if st.button("Iniciar processamento"):
-        if doc_file is not None:
+        if doc_file is not None and doc_file.type == "application/pdf":
             file_details = {"Filename": doc_file.name, "FileType": doc_file.type, "FileSize": doc_file.size}
             BOText = read_pdf(doc_file)
 
@@ -473,93 +473,94 @@ def main():
             st.markdown(f"**hora do fato:** {hora}")
             # st.markdown(f"**data atual:** {data_atual}")
 
+
+
+            # Inserir nome do Promotor
+            if nome_promotor is None or len(nome_promotor) <= 0:
+                nome_promotor = None
+                promotor_justica = "Promotor de Justiça"
+            else:
+                primeiro_nome_promotor = nome_promotor.split()[0]
+                try:
+                    sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
+                    if sexo_promotor == "F":
+                        sexo_promotor = "feminino"
+                    else:
+                        sexo_promotor = "masculino"
+                    st.markdown(f"**Nome do(a) Promotor(a) de Justiça:** {nome_promotor}")
+                    st.markdown(f"**Sexo do(a) Promotor(a) de Justiça:** {sexo_promotor}")
+                    if sexo_promotor == "feminino":
+                        promotor_justica = "Promotora de Justiça"
+                    else:
+                        promotor_justica = "Promotor de Justiça"
+                except:
+                    promotor_justiça = "Promotor de Justiça"
+
+            change_term_in_whole_document(d, "Subscritor", nome_promotor, "bold")
+            change_term_in_whole_document(d, "Promotor", promotor_justica, "bold")
+
+            # Inserir a comarca na primeira linha e assinatura:
+            change_term_by_font_style(d, "EXCELENTÍSSIMO", "underline", comarc, 'upper', "bold")
+            change_term_by_font_style(d, "EXCELENTÍSSIMO", "italic", tipo_vara, 'upper', "bold")
+            change_term_in_whole_document(d, "sede_do_juizo", comarc)
+
+            # Inserir testemunhas:
+            change_term_in_whole_document(d, "CONDUTOR1", condutor_profissao)
+            change_term_in_whole_document(d, "TESTEMUNHA2", testemunha_profissao)
+            change_term_in_whole_document(d, "vítima3", vitima)
+            change_term_in_whole_document(d, "placeholder4", vitima)
+
+            # inserir data atual (a atualização automatica do word não funciona direito)
+            change_term_in_whole_document(d, "5TODAY5", data_atual)
+            # Alterações DENUNCIA:
+            if denuncia:
+                # Trocar a data, cidade, comarca, endereço, horario e o nome do denunciado na Denúncia
+                change_term_by_placeholder(d, "Consta", "data", data_ext)
+                change_term_by_placeholder(d, "Consta", "municipalidade", municipalidade)
+                change_term_by_placeholder(d, "Consta", "sede_do_juizo", comarc)
+                change_term_by_placeholder(d, "Consta", "endereco", Local)
+                change_term_by_placeholder(d, "Consta", "hora", hora)
+                change_term_by_font_style(d, "Consta", "bold", indiciado, bold_und="bold")
+                change_term_by_font_style(d, "Ante o exposto", "bold", indiciado, bold_und="bold")
+                change_term_by_font_style(d, "Ofereço denúncia em separado", "bold", indiciado, bold_und="bold")
+            else:
+                pass
+
+            # Alterações PARECER PRISAO
+            if prisao_flagrante:
+                # Trocar hora, endereço, cidade no Parecer em auto de prisão em flagrante:
+                change_term_by_placeholder(d, "Trata-se de auto", "infracao", infracao)
+                change_term_by_placeholder(d, "Trata-se de auto", "data", data_ext)
+                change_term_by_placeholder(d, "Trata-se de auto", "municipalidade", cidade2)
+                change_term_by_placeholder(d, "Trata-se de auto", "endereco", Local)
+                change_term_by_placeholder(d, "Trata-se de auto", "hora", hora)
+                change_term_by_placeholder(d, "Trata-se de auto", "indiciado4", indiciado)
+            else:
+                pass
+
+            # Alterações MEDIDA PROTETIVA:
+            if medida_protetiva:
+                # Troca vítima na medida protetiva:
+                change_term_by_placeholder(d, "Trata-se de expediente", "placeholder1", vitima)
+                change_term_by_placeholder(d, "Trata-se de expediente", "indiciado4", indiciado)
+            else:
+                pass
+
+
+            # Substituindo o número do processo no arquivo Word:
+            for para in range(len(d.paragraphs)):
+                for run in range(len(d.paragraphs[para].runs)):
+                    d.paragraphs[para].runs[run].text = re.sub(r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}', numero,
+                                                               d.paragraphs[para].runs[run].text)
+
+            d.save(f"{nome_arquivo[:-5]}_{numero}.docx")
+
+            st.markdown(get_binary_file_downloader_html(f"{nome_arquivo[:-5]}_{numero}.docx", '  minuta da peça jurídica'),
+                        unsafe_allow_html=True)
+
+            os.remove(f"{nome_arquivo[:-5]}_{numero}.docx")
         else:
-            st.warning('Arquivo não PDF')
-
-        # Inserir nome do Promotor
-        if nome_promotor is None or len(nome_promotor) <= 0:
-            nome_promotor = None
-            promotor_justica = "Promotor de Justiça"
-        else:
-            primeiro_nome_promotor = nome_promotor.split()[0]
-            try:
-                sexo_promotor = genderbr.get_gender(primeiro_nome_promotor)
-                if sexo_promotor == "F":
-                    sexo_promotor = "feminino"
-                else:
-                    sexo_promotor = "masculino"
-                st.markdown(f"**Nome do(a) Promotor(a) de Justiça:** {nome_promotor}")
-                st.markdown(f"**Sexo do(a) Promotor(a) de Justiça:** {sexo_promotor}")
-                if sexo_promotor == "feminino":
-                    promotor_justica = "Promotora de Justiça"
-                else:
-                    promotor_justica = "Promotor de Justiça"
-            except:
-                promotor_justiça = "Promotor de Justiça"
-
-        change_term_in_whole_document(d, "Subscritor", nome_promotor, "bold")
-        change_term_in_whole_document(d, "Promotor", promotor_justica, "bold")
-
-        # Inserir a comarca na primeira linha e assinatura:
-        change_term_by_font_style(d, "EXCELENTÍSSIMO", "underline", comarc, 'upper', "bold")
-        change_term_by_font_style(d, "EXCELENTÍSSIMO", "italic", tipo_vara, 'upper', "bold")
-        change_term_in_whole_document(d, "sede_do_juizo", comarc)
-
-        # Inserir testemunhas:
-        change_term_in_whole_document(d, "CONDUTOR1", condutor_profissao)
-        change_term_in_whole_document(d, "TESTEMUNHA2", testemunha_profissao)
-        change_term_in_whole_document(d, "vítima3", vitima)
-        change_term_in_whole_document(d, "placeholder4", vitima)
-
-        # inserir data atual (a atualização automatica do word não funciona direito)
-        change_term_in_whole_document(d, "5TODAY5", data_atual)
-        # Alterações DENUNCIA:
-        if denuncia:
-            # Trocar a data, cidade, comarca, endereço, horario e o nome do denunciado na Denúncia
-            change_term_by_placeholder(d, "Consta", "data", data_ext)
-            change_term_by_placeholder(d, "Consta", "municipalidade", municipalidade)
-            change_term_by_placeholder(d, "Consta", "sede_do_juizo", comarc)
-            change_term_by_placeholder(d, "Consta", "endereco", Local)
-            change_term_by_placeholder(d, "Consta", "hora", hora)
-            change_term_by_font_style(d, "Consta", "bold", indiciado, bold_und="bold")
-            change_term_by_font_style(d, "Ante o exposto", "bold", indiciado, bold_und="bold")
-            change_term_by_font_style(d, "Ofereço denúncia em separado", "bold", indiciado, bold_und="bold")
-        else:
-            pass
-
-        # Alterações PARECER PRISAO
-        if prisao_flagrante:
-            # Trocar hora, endereço, cidade no Parecer em auto de prisão em flagrante:
-            change_term_by_placeholder(d, "Trata-se de auto", "infracao", infracao)
-            change_term_by_placeholder(d, "Trata-se de auto", "data", data_ext)
-            change_term_by_placeholder(d, "Trata-se de auto", "municipalidade", cidade2)
-            change_term_by_placeholder(d, "Trata-se de auto", "endereco", Local)
-            change_term_by_placeholder(d, "Trata-se de auto", "hora", hora)
-            change_term_by_placeholder(d, "Trata-se de auto", "indiciado4", indiciado)
-        else:
-            pass
-
-        # Alterações MEDIDA PROTETIVA:
-        if medida_protetiva:
-            # Troca vítima na medida protetiva:
-            change_term_by_placeholder(d, "Trata-se de expediente", "placeholder1", vitima)
-            change_term_by_placeholder(d, "Trata-se de expediente", "indiciado4", indiciado)
-        else:
-            pass
-
-
-        # Substituindo o número do processo no arquivo Word:
-        for para in range(len(d.paragraphs)):
-            for run in range(len(d.paragraphs[para].runs)):
-                d.paragraphs[para].runs[run].text = re.sub(r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}', numero,
-                                                           d.paragraphs[para].runs[run].text)
-
-        d.save(f"{nome_arquivo[:-5]}_{numero}.docx")
-
-        st.markdown(get_binary_file_downloader_html(f"{nome_arquivo[:-5]}_{numero}.docx", '  minuta da peça jurídica'),
-                    unsafe_allow_html=True)
-
-        os.remove(f"{nome_arquivo[:-5]}_{numero}.docx")
+            st.warning('Insira um arquivo PDF válido e tente novamente.')
 
 
     # Aba sobre no sidebar:
