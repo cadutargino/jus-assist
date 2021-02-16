@@ -408,28 +408,40 @@ def main():
 
             # Extrai data e hora
             DataHora = extract_term(BOText, r'Ocorrência: (.*?)Comu')
-            if DataHora is not None:
+            # st.write(DataHora)
+            if DataHora is not None and len(DataHora) < 90:
                 DataHora = DataHora[:-4]
                 DataHora = DataHora.lower()
                 data_hora = DataHora[11:].strip()
-                data = DataHora.split()[1]
-                hora = DataHora.split()[3].strip()
+                data_match = re.findall(r'\d{1,2}/\d{2}/\d{4}', data_hora)
+                if data_match is not None and len(data_match) == 1:
+                    data = data_match[0]
+                    data = data.split(sep='/')
+                    meses = {'01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril', '05': 'maio',
+                             '06': 'junho',
+                             '07': 'julho', '08': 'agosto', '09': 'setembro', '10': 'outubro', '11': 'novembro',
+                             '12': 'dezembro'}
+                    data_ext = data[0] + ' de ' + meses[data[1]] + ' de ' + data[2]
+                else:
+                    data_ext = data_hora
+
+                # data = DataHora.split()[1]
+                hora_match = re.findall(r'\d{1,2}:\d{2}', data_hora)
+                if hora_match is not None and len(hora_match) == 1:
+                    hora = hora_match[0]
+                else:
+                    hora = ""
+
 
                 if ":" in hora and len(hora) <= 5:
                     hora = hora.split(sep=':')
                     hora = 'por volta de ' + hora[0] + 'h' + hora[1] + 'min'
                 else:
-                    pass
-                data = data.split(sep='/')
-                meses = {'01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril', '05': 'maio',
-                         '06': 'junho',
-                         '07': 'julho', '08': 'agosto', '09': 'setembro', '10': 'outubro', '11': 'novembro',
-                         '12': 'dezembro'}
-                data_ext = data[0] + ' de ' + meses[data[1]] + ' de ' + data[2]
+                    hora = ""
+                    data_ext = data_hora
             else:
-                data = None
-                data_ext = None
-                hora = None
+                hora = ""
+                data_ext = ""
 
             # Escolhe modelo pelo sexo
 
