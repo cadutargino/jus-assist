@@ -397,14 +397,16 @@ def main():
             else:
                 profissao_condutor = ""
 
+            if profissao_condutor != "":
+                condutor_profissao = f"{condutor}, {profissao_condutor}"
+            else:
+                condutor_profissao = f"{condutor}"
 
-            condutor_profissao = f"{condutor}, {profissao_condutor}"
-            testemunha_profissao = f"{testemunha}, {profissao_testemunha}"
+            if profissao_testemunha != "":
+                testemunha_profissao = f"{testemunha}, {profissao_testemunha}"
+            else:
+                testemunha_profissao = f"{testemunha}"
 
-
-            # Extrai sexo do indiciado
-            # nome = indiciado.split()[0]
-            # sexo = genderbr.get_gender(nome)
 
             # Extrai data e hora
             DataHora = extract_term(BOText, r'Ocorrência: (.*?)Comu')
@@ -443,12 +445,6 @@ def main():
                 hora = ""
                 data_ext = ""
 
-            # Escolhe modelo pelo sexo
-
-            # if sexo == "M":
-            #     d = docx.Document('CRDen.docx')
-            # else:
-            #     d = docx.Document('CRDen_a.docx')
 
             # Insere data atual e grava na variável data_atual
             now = datetime.now()
@@ -477,8 +473,8 @@ def main():
             st.markdown(f"**cidade:** {cidade2}")
             st.markdown(f"**comarca:** {comarc}")
             st.markdown(f"**indiciado:** {indiciado}")
-            st.markdown(f"**condutor:** {condutor}, {profissao_condutor}")
-            st.markdown(f"**testemunha:** {testemunha}, {profissao_testemunha}")
+            st.markdown(f"**condutor:** {condutor_profissao}")
+            st.markdown(f"**testemunha:** {testemunha_profissao}")
             st.markdown(f"**vítima**: {vitima}")
             st.markdown(f"**autos nº:** {numero}")
             st.markdown(f"**data do fato:** {data_ext}")
