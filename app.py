@@ -595,32 +595,32 @@ def main():
 
 
     # Aba sobre no sidebar:
+    #
+    # labels = ["Sobre o aplicativo", "Sobre o autor"]
+    # choice = st.sidebar.selectbox("Sobre o aplicativo: / Sobre o autor:", labels)
+    # if choice == "Sobre o aplicativo":
+    st.markdown("---")
+    st.subheader("Limitações e breves considerações:")
+    st.markdown("* Destinado à confecção de peças simples, a partir de modelos para casos mais comuns.")
+    st.markdown("* Extrai alguns dados do boletim de ocorrência tais como: data, horário e local do crime,"
+                " cidade, comarca, nomes do indiciado, de testemunhas, vítima, número do processo, etc.")
+    st.markdown("* Com esses dados, o aplicativo gera uma minuta da peça jurídica já com essas informações incorporados.")
+    st.markdown('* O "recheio" da peça, é apenas um modelo, sem modificação realizada pelo aplicativo. Na denúncia, a maior parte das'
+                ' modificações é realizada no primeiro e no último parágrafos.')
+    st.markdown("* O arquivo word da minuta fica disponível no link para download, após o processamento do PDF.")
+    st.markdown("* O aplicativo não permanece com cópia do Boletim de Ocorrência, nem tampouco com qualquer informação extraída"
+                " do boletim de ocorrência ou inserida pelo usuário.")
+    st.markdown("* Por enquanto, extrai os dados de apenas um indiciado.")
+    st.markdown("* O criador do aplicativo não é programador profissional. Pode haver falhas, confira o resultado final.")
 
-    labels = ["Sobre o aplicativo", "Sobre o autor"]
-    choice = st.sidebar.selectbox("Sobre o aplicativo: / Sobre o autor:", labels)
-    if choice == "Sobre o aplicativo":
-        st.markdown("---")
-        st.subheader("Limitações e breves considerações:")
-        st.markdown("* Destinado à confecção de peças simples, a partir de modelos para casos mais comuns.")
-        st.markdown("* Extrai alguns dados do boletim de ocorrência tais como: data, horário e local do crime,"
-                    " cidade, comarca, nomes do indiciado, de testemunhas, vítima, número do processo, etc.")
-        st.markdown("* Com esses dados, o aplicativo gera uma minuta da peça jurídica já com essas informações incorporados.")
-        st.markdown('* O "recheio" da peça, é apenas um modelo, sem modificação realizada pelo aplicativo. Na denúncia, a maior parte das'
-                    ' modificações é realizada no primeiro e no último parágrafos.')
-        st.markdown("* O arquivo word da minuta fica disponível no link para download, após o processamento do PDF.")
-        st.markdown("* O aplicativo não permanece com cópia do Boletim de Ocorrência, nem tampouco com qualquer informação extraída"
-                    " do boletim de ocorrência ou inserida pelo usuário.")
-        st.markdown("* Por enquanto, extrai os dados de apenas um indiciado.")
-        st.markdown("* O criador do aplicativo não é programador profissional. Pode haver falhas, confira o resultado final.")
-
-    elif choice == "Sobre o autor":
-        st.markdown("---")
-        st.subheader("Sobre o autor:")
-        st.markdown("Este aplicativo foi desenvolvido por **Carlos Eduardo Targino da Silva**,"
-                    " 2º Promotor de Justiça de Conchas, para automação parcial da produção de peças jurídicas"
-                    " mais simples no âmbito do Ministério Público."
-                    " A ideia é tentar minimizar erros e evitar perda de tempo desnecessária com transcrições de dados.")
-        st.markdown("Caso tenha alguma crítica ou sugestão, entre em contato por email: "
-                    "<mailto:carlostsilva@mpsp.mp.br>")
+        # elif choice == "Sobre o autor":
+    st.markdown("---")
+    st.subheader("Sobre o autor:")
+    st.markdown("Este aplicativo foi desenvolvido por **Carlos Eduardo Targino da Silva**,"
+                " 2º Promotor de Justiça de Conchas, para automação parcial da produção de peças jurídicas"
+                " mais simples no âmbito do Ministério Público."
+                " A ideia é tentar minimizar erros e evitar perda de tempo desnecessária com transcrição de dados.")
+    st.markdown("Caso tenha alguma crítica ou sugestão, entre em contato por email: "
+                "<mailto:carlostsilva@mpsp.mp.br>")
 if __name__ == '__main__':
     main()
