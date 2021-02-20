@@ -202,6 +202,28 @@ def titled_string_rectifier(string):
     return new_string
 
 
+def translate_date(data):
+    data = data.split(sep='/')
+    meses = {'01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril', '05': 'maio',
+         '06': 'junho',
+         '07': 'julho', '08': 'agosto', '09': 'setembro', '10': 'outubro', '11': 'novembro',
+         '12': 'dezembro'}
+    return data[0] + ' de ' + meses[data[1]] + ' de ' + data[2]
+
+
+def transform_date(string_data):
+    date_match = re.findall(r'\d{1,2}/\d{2}/\d{4}', string_data)
+    datas_normal = []
+    datas_extenso = []
+    for date in date_match:
+        datas_normal.append(date)
+        datas_extenso.append(translate_date(date))
+    for i in range(len(datas_normal)):
+        string = re.sub(f'{datas_normal[i]}', f'{datas_extenso[i]}', string_data)
+        string_data = string
+    return string_data
+
+
 def main():
     """Assistente de denúncia"""
 
@@ -418,14 +440,15 @@ def main():
                 data_match = re.findall(r'\d{1,2}/\d{2}/\d{4}', data_hora)
                 if data_match is not None and len(data_match) == 1:
                     data = data_match[0]
-                    data = data.split(sep='/')
-                    meses = {'01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril', '05': 'maio',
-                             '06': 'junho',
-                             '07': 'julho', '08': 'agosto', '09': 'setembro', '10': 'outubro', '11': 'novembro',
-                             '12': 'dezembro'}
-                    data_ext = data[0] + ' de ' + meses[data[1]] + ' de ' + data[2]
+                    data_ext = translate_date(data)
+                    # data = data.split(sep='/')
+                    # meses = {'01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril', '05': 'maio',
+                    #          '06': 'junho',
+                    #          '07': 'julho', '08': 'agosto', '09': 'setembro', '10': 'outubro', '11': 'novembro',
+                    #          '12': 'dezembro'}
+                    # data_ext = data[0] + ' de ' + meses[data[1]] + ' de ' + data[2]
                 else:
-                    data_ext = data_hora
+                    data_ext = transform_date(data_hora)
 
                 # data = DataHora.split()[1]
                 hora_match = re.findall(r'\d{1,2}:\d{2}', data_hora)
@@ -440,7 +463,7 @@ def main():
                     hora = 'por volta de ' + hora[0] + 'h' + hora[1] + 'min'
                 else:
                     hora = ""
-                    data_ext = data_hora
+                    data_ext = transform_date(data_hora)
             else:
                 hora = ""
                 data_ext = ""
