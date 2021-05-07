@@ -328,6 +328,8 @@ def main():
 
             if cidade2 == "S.Paulo" or cidade2 == "S. Paulo":
                 cidade2 = "São Paulo"
+            elif cidade2 == "S.Sebastiao" or cidade2 == "S. Sebastiao" or cidade2 == "S.Sebastião" or cidade2 == "S. Sebastião":
+                cidade2 = "São Sebastião"
 
             if unidecode(cidade2) == unidecode(comarc):
                 municipalidade = f"e comarca de {comarc}"
