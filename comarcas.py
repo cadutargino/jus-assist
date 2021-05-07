@@ -579,6 +579,8 @@ comarcas = {
     "ARAÇARIGUAMA": "SÃO ROQUE",
     "SÃO ROQUE": "SÃO ROQUE",
     "SÃO SEBASTIÃO": "SÃO SEBASTIÃO",
+    "S. SEBASTIÃO": "SÃO SEBASTIÃO",
+    "S.SEBASTIÃO": "SÃO SEBASTIÃO",
     "DIVINOLÂNDIA": "SÃO SEBASTIÃO DA GRAMA",
     "SÃO SEBASTIÃO DA GRAMA": "SÃO SEBASTIÃO DA GRAMA",
     "LUís ANTôNIO": "SÃO SIMÃO",
