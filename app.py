@@ -310,7 +310,7 @@ def main():
         multa_penal = True
         nome_arquivo = multa_penal_filename
         d = docx.Document(nome_arquivo)
-        nome_comarca = st.text_input("Insira nome da comarca ou deixe em branco para usar a informação da certidão")
+        nome_comarca = st.text_input("Insira a comarca de endereçamento ou deixe em branco para usar a comarca de origem da sentença condenatória.")
     else:
         nome_arquivo = "em_branco"
         d = docx.Document(blanck)
@@ -699,10 +699,10 @@ def main():
     st.markdown("---")
     st.subheader("Limitações e breves considerações:")
     st.markdown("* Destinado à confecção de peças simples, a partir de modelos para casos mais comuns.")
-    st.markdown("* Extrai alguns dados do boletim de ocorrência tais como: data, horário e local do crime,"
+    st.markdown("* Extrai alguns dados do boletim de ocorrência ou da certidão de multa penal, tais como: data, horário e local do crime,"
                 " cidade, comarca, nomes do indiciado, de testemunhas, vítima, número do processo, etc.")
     st.markdown("* Com esses dados, o aplicativo gera uma minuta da peça jurídica já com essas informações incorporados.")
-    st.markdown('* O "recheio" da peça, é apenas um modelo, sem modificação realizada pelo aplicativo. Na denúncia, a maior parte das'
+    st.markdown('* O "recheio" da peça é apenas um modelo, sem modificação realizada pelo aplicativo. Na denúncia, a maior parte das'
                 ' modificações é realizada no primeiro e no último parágrafos.')
     st.markdown("* O arquivo word da minuta fica disponível no link para download, após o processamento do PDF.")
     st.markdown("* O aplicativo não permanece com cópia do Boletim de Ocorrência, nem tampouco com qualquer informação extraída"
