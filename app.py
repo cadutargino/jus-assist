@@ -310,6 +310,7 @@ def main():
         multa_penal = True
         nome_arquivo = multa_penal_filename
         d = docx.Document(nome_arquivo)
+        nome_comarca = st.text_input("Insira nome da comarca ou deixe em branco para usar a informação da certidão")
     else:
         nome_arquivo = "em_branco"
         d = docx.Document(blanck)
@@ -370,13 +371,16 @@ def main():
 
             # Foro
             if multa_penal:
-                cidade2 = extract_term(BOText, r'[Cc]omarca\/[Ff]oro.*Autor')
-                cidade2 = cidade2[12:-5]
-                for comarca in comarcas.comarcas2:
-                    if comarca in cidade2:
-                        cidade2 = comarca
+                if nome_comarca != "" and len(nome_comarca) > 2:
+                    comarc = nome_comarca
+                else:
+                    cidade2 = extract_term(BOText, r'[Cc]omarca\/[Ff]oro.*Autor')
+                    cidade2 = cidade2[12:-5]
+                    for comarca in comarcas.comarcas2:
+                        if comarca in cidade2:
+                            cidade2 = comarca
 
-                comarc = comarcas.comarcas2[cidade2]
+                    comarc = comarcas.comarcas2[cidade2]
 
                 processo = extract_term(BOText, r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}')
 
