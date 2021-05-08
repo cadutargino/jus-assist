@@ -65,4 +65,5 @@ prisao = ["conversão em prisão preventiva", "liberdade provisória", "liberdad
 prisao_filenames = ["CRParec_prisao_preventiva.docx", "CRParec_liberdade_provisoria.docx", "CRParec_liberdade_provisoria_medida_protetiva.docx"]
 dict_prisao = dict(zip(prisao, prisao_filenames))
 
+multa_penal_filename = "CRExec.docx"
 blanck = "blanck.docx"

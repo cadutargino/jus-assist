@@ -9,8 +9,47 @@ from PyPDF2 import PdfFileReader
 import comarcas
 from comarcas import grandes
 from dict_crimes import dict_crimes, trafico, furto, lei_maria_penha, roubo, transito, med_prot, dict_med_prot, prisao, \
-    dict_prisao, crimes_especie2, blanck
+    dict_prisao, crimes_especie2, multa_penal_filename, blanck
 from datetime import datetime
+from num2words import num2words
+
+
+def number_to_long_number(number_p):
+    if number_p.find(',')!=-1:
+        number_p = number_p.split(',')
+        number_p1 = int(number_p[0].replace('.',''))
+        number_p2 = int(number_p[1])
+    else:
+        number_p1 = int(number_p.replace('.',''))
+        number_p2 = 0
+
+    if number_p1 == 1:
+        aux1 = ' real'
+    else:
+        aux1 = ' reais'
+
+    if number_p2 == 1:
+        aux2 = ' centavo'
+    else:
+        aux2 = ' centavos'
+
+    text1 = ''
+    if number_p1 > 0:
+        text1 = num2words(number_p1,lang='pt_BR') + str(aux1)
+    else:
+        text1 = ''
+
+    if number_p2 > 0:
+        text2 = num2words(number_p2,lang='pt_BR') + str(aux2)
+    else:
+        text2 = ''
+
+    if (number_p1 > 0 and number_p2 > 0):
+        result = text1 + ' e ' + text2
+    else:
+        result = text1 + text2
+
+    return result
 
 
 def get_binary_file_downloader_html(bin_file, file_label='File'):
@@ -228,7 +267,7 @@ def main():
     """Assistente de denúncia"""
 
     st.title('Assistente de redação de peças jurídicas')
-    st.text('Sistema auxiliar para produção de minutas do MPSP a partir do PDF do boletim de ocorrência')
+    st.text('Minutas do MPSP a partir do PDF do boletim de ocorrência ou da certidão de multa penal.')
     nome_promotor = st.text_input("Insira o nome do(a) Promotor(a) de Justiça:")
     medida_protetiva = False
     prisao_flagrante = False
@@ -267,11 +306,15 @@ def main():
         especie_prisao = st.selectbox("Parecer em auto de prisão em flagrante", prisao)
         nome_arquivo = dict_prisao[especie_prisao]
         d = docx.Document(nome_arquivo)
+    elif st.checkbox("Execução de pena de multa"):
+        multa_penal = True
+        nome_arquivo = multa_penal_filename
+        d = docx.Document(nome_arquivo)
     else:
         nome_arquivo = "em_branco"
         d = docx.Document(blanck)
 
-    doc_file = st.file_uploader("Insira PDF do Boletim de Ocorrência extraído do processo digital:", type=["pdf"])
+    doc_file = st.file_uploader("Insira PDF do Boletim de Ocorrência ou da certidão de multa penal extraído do processo digital:", type=["pdf"])
     if st.button("Iniciar processamento"):
         if doc_file is not None and doc_file.type == "application/pdf":
             file_details = {"Filename": doc_file.name, "FileType": doc_file.type, "FileSize": doc_file.size}
@@ -325,6 +368,35 @@ def main():
                 if unidecode(cidade2) == unidecode(city):
                     comarc = comarcas.comarcas2[city]
 
+            # Foro
+            if multa_penal:
+                cidade2 = extract_term(BOText, r'[Cc]omarca\/[Ff]oro.*Autor')
+                cidade2 = cidade2[12:-5]
+                for comarca in comarcas.comarcas2:
+                    if comarca in cidade2:
+                        cidade2 = comarca
+
+                comarc = comarcas.comarcas2[cidade2]
+
+                processo = extract_term(BOText, r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}')
+
+                # Qualificação e nome:
+                qualificacao = extract_term(BOText, r'[Dd]evedor.*?:.*?Local')
+                qualificacao = qualificacao[51:-5]
+                executado = qualificacao.split(",")[0]
+                qualificacao = ", ".join(qualificacao.split(",")[1::])
+                # Valor da multa normal e por extenso
+                valor = extract_term(BOText, r'R\$.*,\d{2}')
+
+                extenso = number_to_long_number(valor[2:])
+                extenso = f"({extenso})"
+                # Artigo
+                artigo = extract_term(BOText, r'[Ii]nfraç..*?:.*?Senten')
+                artigo = artigo[9:-6]
+                if "ano" in artigo or "meses" in artigo:
+                    artigo = f"a {artigo}"
+                else:
+                    artigo = f"como incurso no {artigo}"
 
             if cidade2 == "S.Paulo" or cidade2 == "S. Paulo":
                 cidade2 = "São Paulo"
@@ -481,12 +553,18 @@ def main():
             data_atual = f"{now.day} de {meses_2[now.month]} de {now.year}"
 
             # Extrai numero do processo
-            numRegex = re.compile(r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}')
-            mo_num = numRegex.search(doc_file.name)
-            if mo_num is not None:
-                numero = mo_num.group()
+            if multa_penal:
+                # Processo principal execução:
+                numero = extract_term(BOText, r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}')
             else:
-                numero = doc_file.name[:-4]
+                numRegex = re.compile(r'\d{4,7}-\d{2}.\d{4}.\d.\d{2}.\d{4}')
+                mo_num = numRegex.search(doc_file.name)
+                if mo_num is not None:
+                    numero = mo_num.group()
+                else:
+                    numero = doc_file.name[:-4]
+
+
 
             # numero = doc_file.name[-29:-4]  # numero do processo para incluir no nome do arquivo final
 
@@ -497,6 +575,9 @@ def main():
             st.markdown(f"**local:** {Local}")
             st.markdown(f"**cidade:** {cidade2}")
             st.markdown(f"**comarca:** {comarc}")
+            st.markdown(f"**executado:** {executado}")
+            st.markdown(f"**qualificação:** {qualificacao}")
+            st.markdown(f"**Valor da multa:** {valor}")
             st.markdown(f"**indiciado:** {indiciado}")
             st.markdown(f"**condutor:** {condutor_profissao}")
             st.markdown(f"**testemunha:** {testemunha_profissao}")
@@ -579,6 +660,16 @@ def main():
             else:
                 pass
 
+            if multa_penal:
+                change_term_by_placeholder(d, "respeitosamente, vem", "EXECUTADO", executado)
+                change_term_by_placeholder(d, "respeitosamente, vem", "endereco", qualificacao)
+                change_term_by_placeholder(d, "O executado foi condenado", "infracao", artigo)
+                change_term_by_placeholder(d, "O valor da pena de multa aplicada", "montante", valor)
+                change_term_by_placeholder(d, "O valor da pena de multa aplicada", "totalidade", extenso)
+                change_term_by_placeholder(d, "Atribui-se", "montante", valor)
+                change_term_by_placeholder(d, "Atribui-se", "totalidade", extenso)
+
+
 
             # Substituindo o número do processo no arquivo Word:
             for para in range(len(d.paragraphs)):
@@ -619,7 +710,7 @@ def main():
     st.markdown("---")
     st.subheader("Sobre o autor:")
     st.markdown("Este aplicativo foi desenvolvido por **Carlos Eduardo Targino da Silva**,"
-                " 2º Promotor de Justiça de Conchas, para automação parcial da produção de peças jurídicas"
+                " 4º Promotor de Justiça de São Sebastião, para automação parcial da produção de peças jurídicas"
                 " mais simples no âmbito do Ministério Público."
                 " A ideia é tentar minimizar erros e evitar perda de tempo desnecessária com transcrição de dados.")
     st.markdown("Caso tenha alguma crítica ou sugestão, entre em contato por email: "
