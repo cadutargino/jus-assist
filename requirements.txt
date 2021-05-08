@@ -5,4 +5,4 @@ genderbr==0.1.2
 docx==0.2.4
 PyPDF2==1.26.0
 unidecode==1.1.2
-
+num2words==0.5.10
