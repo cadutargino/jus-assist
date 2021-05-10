@@ -311,7 +311,7 @@ def main():
         multa_penal = True
         nome_arquivo = multa_penal_filename
         d = docx.Document(nome_arquivo)
-        nome_comarca = st.text_input("Insira a comarca de endereçamento ou deixe em branco para usar a comarca de origem da sentença condenatória.")
+        nome_comarca = st.text_input("Insira a comarca de endereçamento ou deixe em branco para usar a comarca de origem da sentença condenatória:")
     else:
         nome_arquivo = "em_branco"
         d = docx.Document(blanck)
@@ -402,6 +402,13 @@ def main():
                     artigo = f"a {artigo}"
                 else:
                     artigo = f"como incurso no {artigo}"
+            else:
+                qualificacao =""
+                extenso = ""
+                artigo = ""
+                executado = ""
+                valor = ""
+
 
             if cidade2 == "S.Paulo" or cidade2 == "S. Paulo":
                 cidade2 = "São Paulo"
