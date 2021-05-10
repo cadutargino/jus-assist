@@ -272,6 +272,7 @@ def main():
     medida_protetiva = False
     prisao_flagrante = False
     denuncia = False
+    multa_penal = False
 
     if st.checkbox("Denúncia"):
         denuncia = True
